@@ -258,9 +258,7 @@ val ParseJSOX(  const char *utf8String, size_t len, struct reviver_data *revive 
         //logTick(5);
 
 	return value;
-
-
-
+	//return val::undefined();
 }
 
 
@@ -282,28 +280,7 @@ val jsox_parse( emscripten::val string, emscripten::val reviver ) {
 }
 
 
-
-
 EMSCRIPTEN_BINDINGS(my_module) {
-	//printf( "REGSITER THIGN\n");
-
     function("JSOXParse", jsox_parse );
-//    function("gsm_decode", do_gsm_encode, allow_raw_pointers() );
-//    function("gsm_encode", do_gsm_encode, allow_raw_pointers() );
 }
 
-/*
-EMSCRIPTEN_BINDINGS(my_value_example) {
-    value_array<Point2f>("Point2f")
-        .element(&Point2f::x)
-        .element(&Point2f::y)
-        ;
-
-    value_object<PersonRecord>("PersonRecord")
-        .field("name", &PersonRecord::name)
-        .field("age", &PersonRecord::age)
-        ;
-
-    function("findPersonAtLocation", &findPersonAtLocation);
-}
-*/
