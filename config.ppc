@@ -1,5 +1,6 @@
 #define JSON_PARSER_MAIN_SOURCE
 #define NO_OPEN_MACRO
+#define __NO_MMAP__
 #define __STATIC__
 #define __NO_OPTIONS__
 #define __NO_ODBC__
