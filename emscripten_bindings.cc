@@ -265,7 +265,12 @@ val ParseJSOX(  const char *utf8String, size_t len, struct reviver_data *revive 
 val jsox_parse( emscripten::val string, emscripten::val reviver ) {
 	//logTick(0);
 	struct reviver_data *r = new reviver_data();
+
+.._malloc and stringToUTF8()
+//If you need a string to live forever, you can create it, for example, using _malloc and stringToUTF8(). However, you must later delete it manually!
+printf( "convertin to string...\n" );
 	std::string s = string.as<std::string>();
+printf( "confted string:%s", s.c_str() );
 	if( reviver.as<bool>() ) {
 		//r._this = args.Holder();
 		r->value = val( "" );
