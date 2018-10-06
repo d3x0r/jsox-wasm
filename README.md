@@ -12,9 +12,11 @@ jsox_parser.c is a simple user of jsox.cc
 
 ```
 
-r = jsox_parse_message( data, size, &pdl );
+	r = jsox_parse_message( data, size, &pdl );
 	if( r > 0 )
 		DumpMessage( pdl );
+
+	
 
 ```
 

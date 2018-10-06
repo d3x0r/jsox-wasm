@@ -16493,7 +16493,7 @@ int jsox_parse_add_data( struct jsox_parse_state *state
 		while( state->status && (state->n < input->size) && (c = GetUtfChar( &input->pos )) )
 		{
 #ifdef DEBUG_PARSING
-			lprintf( "parse character %c %d %d", c, state->word, state->parse_context );
+			lprintf( "parse character %c %d %d %d %d", c<32?".":c, state->word, state->parse_context, state->parse_context, state->word );
 #endif
 			state->col++;
 			state->n = input->pos - input->buf;
@@ -16880,6 +16880,9 @@ int jsox_parse_add_data( struct jsox_parse_state *state
 						//lprintf( "whitespace skip..." );
 						break;
 					default:
+						if( state->word == JSOX_WORD_POS_RESET && ( (c >= '0' && c <= '9') || (c == '+') || (c == '.') ) ) {
+							goto beginNumber;
+						}
 						if( state->word == JSOX_WORD_POS_AFTER_FIELD ) {
 							state->status = FALSE;
 							if( !state->pvtError ) state->pvtError = VarTextCreate();
@@ -17080,6 +17083,7 @@ int jsox_parse_add_data( struct jsox_parse_state *state
 						const char *_msg_input;
 						// always reset this here....
 						// keep it set to determine what sort of value is ready.
+					beginNumber:
 						if( !state->gatheringNumber ) {
 							state->numberFromBigInt = FALSE;
 							state->numberFromDate = FALSE;
@@ -23994,11 +23998,13 @@ void  DebugDumpHeapMemEx ( PMEM pHeap, LOGICAL bVerbose )
 //------------------------------------------------------------------------------------------------------
  void  GetHeapMemStatsEx ( PMEM pHeap, uint32_t *pFree, uint32_t *pUsed, uint32_t *pChunks, uint32_t *pFreeChunks DBG_PASS )
 {
+#if USE_CUSTOM_ALLOCER
 	int nChunks = 0, nFreeChunks = 0, nSpaces = 0;
 	uintptr_t nFree = 0, nUsed = 0;
 	PCHUNK pc, _pc;
 	PMEM pMem;
 	PSPACE pMemSpace;
+#endif
 	if( !USE_CUSTOM_ALLOCER )
       return;
 #if USE_CUSTOM_ALLOCER
