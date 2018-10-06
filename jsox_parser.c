@@ -78,6 +78,7 @@ void DumpMessage( PDATALIST pdl ) {
 		}
 	}
 	level--;
+	if( !level ) printf( "\n" );
 }
 
 void parse( char *fileName ) {
@@ -117,7 +118,6 @@ void parse( char *fileName ) {
 		else if( r < 0 )
 			printf( "Error:%s", GetText( jsox_parse_get_error( NULL ) ) );
 	} while( r > 0 );
-	printf( "\n" );
 }
 
 int main( int argc, char **argv) {
