@@ -615,7 +615,7 @@ But WHO doesn't have stdint?  BTW is sizeof( size_t ) == sizeof( void* )
 #    define LITERAL_LIB_IMPORT_METHOD __declspec(dllimport)
 #  else
 // MRT:  This is needed.  Need to see what may be defined wrong and fix it.
-#    if defined( __LINUX__ ) || defined( __STATIC__ )
+#    if defined( __LINUX__ ) || defined( __STATIC__ ) || defined( __ANDROID__ )
 #      define EXPORT_METHOD
 #      define IMPORT_METHOD extern
 #      define LITERAL_LIB_EXPORT_METHOD
@@ -7583,7 +7583,7 @@ But WHO doesn't have stdint?  BTW is sizeof( size_t ) == sizeof( void* )
 #    define LITERAL_LIB_IMPORT_METHOD __declspec(dllimport)
 #  else
 // MRT:  This is needed.  Need to see what may be defined wrong and fix it.
-#    if defined( __LINUX__ ) || defined( __STATIC__ )
+#    if defined( __LINUX__ ) || defined( __STATIC__ ) || defined( __ANDROID__ )
 #      define EXPORT_METHOD
 #      define IMPORT_METHOD extern
 #      define LITERAL_LIB_EXPORT_METHOD

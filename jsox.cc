@@ -617,7 +617,7 @@ But WHO doesn't have stdint?  BTW is sizeof( size_t ) == sizeof( void* )
 #    define LITERAL_LIB_IMPORT_METHOD __declspec(dllimport)
 #  else
 // MRT:  This is needed.  Need to see what may be defined wrong and fix it.
-#    if defined( __LINUX__ ) || defined( __STATIC__ )
+#    if defined( __LINUX__ ) || defined( __STATIC__ ) || defined( __ANDROID__ )
 #      define EXPORT_METHOD
 #      define IMPORT_METHOD extern
 #      define LITERAL_LIB_EXPORT_METHOD
@@ -7597,7 +7597,7 @@ But WHO doesn't have stdint?  BTW is sizeof( size_t ) == sizeof( void* )
 #    define LITERAL_LIB_IMPORT_METHOD __declspec(dllimport)
 #  else
 // MRT:  This is needed.  Need to see what may be defined wrong and fix it.
-#    if defined( __LINUX__ ) || defined( __STATIC__ )
+#    if defined( __LINUX__ ) || defined( __STATIC__ ) || defined( __ANDROID__ )
 #      define EXPORT_METHOD
 #      define IMPORT_METHOD extern
 #      define LITERAL_LIB_EXPORT_METHOD
@@ -22661,11 +22661,18 @@ uintptr_t GetFileSize( int fd )
 						  , 0 );
 			if( pMem == (POINTER)-1 )
 			{
+				if( errno == ENODEV ) {
+					pMem = malloc( *dwSize );
+				} else {
 				ll_lprintf( "Something bad about this region sized %" _PTRSZVALfs "(%d)", *dwSize, errno );
 				DebugBreak();
+				}
 			}
-			//ll_lprintf( "Clearing anonymous mmap %p %" _size_f "", pMem, *dwSize );
-			MemSet( pMem, 0, *dwSize );
+			if( pMem != (POINTER)-1 )
+			{
+				//ll_lprintf( "Clearing anonymous mmap %p %" _size_f "", pMem, *dwSize );
+				MemSet( pMem, 0, *dwSize );
+			}
 		}
  // name doesn't matter, same file cannot be called another name
 		else if( pWhere )
@@ -24477,7 +24484,7 @@ void  DebugDumpHeapMemEx ( PMEM pHeap, LOGICAL bVerbose )
 						if( ( pc->dwPad >= minPad ) && ( BLOCK_TAG(pc) != BLOCK_TAG_ID ) )
 						{
 #ifndef NO_LOGGING
-							ll_lprintf( "memory block: %p(%p) %08" TAG_FORMAT_MODIFIER "x instead of %08"TAG_FORMAT_MODIFIER "x", pc, pc->byData, BLOCK_TAG(pc), BLOCK_TAG_ID );
+							ll_lprintf( "memory block: %p(%p) %08" TAG_FORMAT_MODIFIER "x instead of %08" TAG_FORMAT_MODIFIER "x", pc, pc->byData, BLOCK_TAG(pc), BLOCK_TAG_ID );
 							if( !(pMemCheck->dwFlags & HEAP_FLAG_NO_DEBUG ) )
 							{
 								CTEXTSTR file = BLOCK_FILE(pc);

@@ -1,5 +1,6 @@
 #include <stdint.h>
-#include <cmath> 
+#include <cmath>
+#include <emscripten.h>
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
 
@@ -7,8 +8,31 @@ using namespace emscripten;
 #include "global.h"
 #include "jsox.h"
 
-struct a {
+struct objectStates {
+	PDATALIST pldObjects;
+	
 };
+
+
+static void initJS()  __attribute__((constructor))
+{
+	EM_ASM( {
+		const objects = [];
+			
+	} );
+
+}
+
+
+static void makeObject() {
+	int x = EM_ASM_INT( {
+		const objects = [];
+		
+		console.log('I received: ' + $0, objects );
+		return $0 + 1;
+	}, 100);
+
+}
 
 
 //#define MODE NewStringType::kInternalized
