@@ -12,7 +12,9 @@
 @set CFLAGS=%CFLAGS% -D__LINUX__
 :@set CFLAGS=%CFLAGS%  -s RESERVED_FUNCTION_POINTERS=20
 
-call emcc -O2 -s WASM=1  -o ./jsox-w.js  jsox.c simple_js.c %CFLAGS% -s EXPORTED_FUNCTIONS="['_initJSOX']" 
+:@set CFLAGS=%CFLAGS% -D_DEBUG
+
+call emcc -O3 -s WASM=1  -o ./jsox-w.js  jsox.c simple_js.c %CFLAGS% -s EXPORTED_FUNCTIONS="['_initJSOX']" 
 
 :call emcc -o ./jsox-w0.js  --bind %CFLAGS% jsox.c simple_js.c
 
